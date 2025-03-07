@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editare Film</title>
+    <style>
+        form {
+            width: 50%;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+            .error-message {
+    color: red; /* Textul va fi roșu */
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+    border: 1px solid red;
+    background-color: #ffe6e6; /* Fundal pal */
+    padding: 10px;
+    border-radius: 5px;
+}
+    </style>
+</head>
+<body>
+<h2 style="text-align: center;">Editare Film</h2>
+<!-- Afișare mesaj de eroare dacă există -->
+<div th:if="${errorMessage}" class="error-message">
+    <p th:text="${errorMessage}"></p>
+</div>
+<form th:action="@{'/edit/' + ${movie.id}}" method="post">
+    <label for="title">Titlu:</label>
+    <input type="text" id="title" name="title" th:value="${movie.title}" required>
+
+    <label for="description">Descriere:</label>
+    <textarea id="description" name="description" th:text="${movie.description}" required></textarea>
+
+    <label for="duration">Durată (minute):</label>
+    <input type="number" id="duration" name="duration" th:value="${movie.duration}" required>
+
+    <label for="showDate">Data proiecției:</label>
+    <input type="date" id="showDate" name="showDate" th:value="${movie.showDate}" required>
+
+    <label for="showtime">Ora proiecției:</label>
+    <input type="text" id="showtime" name="showtime" th:value="${movie.showtime}" placeholder="hh:mm" required>
+
+    <label for="standardPrice">Preț Standard:</label>
+    <input type="number" id="standardPrice" name="standardPrice" th:value="${movie.standardPrice}" required>
+
+    <label for="premiumPrice">Preț Premium:</label>
+    <input type="number" id="premiumPrice" name="premiumPrice" th:value="${movie.premiumPrice}" required>
+
+    <button type="submit">Salvează modificările</button>
+</form>
+</body>
+</html>

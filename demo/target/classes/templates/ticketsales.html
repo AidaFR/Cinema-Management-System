@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ro">
+<head>
+  <title>Vânzări Bilete</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .table-container {
+        width: 90%;
+        margin: 20px auto;
+        border: 1px solid #ddd;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    .stats-container {
+        margin-top: 30px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .navbar {
+       background-color: #333;
+       overflow: hidden;
+       display: flex;
+       justify-content: flex-start;
+       padding: 10px;
+    }
+
+    .navbar a {
+       color: white;
+       text-decoration: none;
+       padding: 10px;
+    }
+
+    .navbar a:hover {
+       background-color: #ddd;
+       color: black;
+    }
+
+    .filter-form {
+        width: 90%;
+        margin: 20px auto;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .filter-form input[type="text"] {
+        padding: 8px;
+        width: 70%;
+        margin-right: 10px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+
+    .filter-form button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .filter-form button:hover {
+        background-color: #45a049;
+    }
+
+    .error-message {
+        color: red;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .error-message {
+        color: red;
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: center;
+        border: 1px solid red;
+        background-color: #ffe6e6;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .promotion-message {
+        color: orange;
+        text-align: center;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+<div class="navbar">
+  <a th:href="@{/login}">Login</a>
+  <a th:href="@{/movies}">Lista Filme</a>
+  <a th:href="@{/sales}">Statistici</a>
+</div>
+
+<h1 style="text-align: center;">Raport de Vânzări</h1>
+<!-- Afișare mesaj de eroare dacă există -->
+<div th:if="${errorMessage}" class="error-message">
+  <p th:text="${errorMessage}"></p>
+</div>
+<!-- Formular pentru filtrare vânzări după dată -->
+<div class="filter-form">
+  <form th:action="@{/sales/filter}" method="get">
+    <label for="filterDate"><strong>Introduceți data pentru filtrare:</strong></label>
+    <input type="text" id="filterDate" name="filterDate" placeholder="yyyy-MM-dd" required>
+    <button type="submit">Filtrează</button>
+  </form>
+</div>
+
+<div class="table-container">
+  <h2>Detalii vânzări</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Film</th>
+      <th>Data vânzării</th>
+      <th>Bilete Standard Vândute</th>
+      <th>Bilete Premium Vândute</th>
+      <th>Încasări Totale</th>
+    </tr>
+    </thead>
+    <tbody th:each="sale : ${sales}">
+    <tr>
+      <td th:text="${sale.movie.title}"></td>
+      <td th:text="${sale.saleDate}"></td>
+      <td th:text="${sale.standardTicketsSold}"></td>
+      <td th:text="${sale.premiumTicketsSold}"></td>
+      <td th:text="${sale.standardTicketsSold * sale.movie.standardPrice + sale.premiumTicketsSold * sale.movie.premiumPrice}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="stats-container">
+  <h2>Statistici</h2>
+  <p><strong>Filmele cu cele mai mari încasări:</strong> <span th:text="${topRevenueMoviesMessage}"></span></p>
+  <p><strong>Filmele cu cele mai multe bilete premium vândute:</strong> <span th:text="${mostPremiumMoviesMessage}"></span></p>
+  <p><strong>Filmele cu cele mai multe bilete standard vândute:</strong> <span th:text="${mostStandardMoviesMessage}"></span></p>
+</div>
+
+<!-- Mesaj pentru promovare -->
+<div th:if="${promotionMessage}" class="promotion-message">
+  <p th:text="${promotionMessage}"></p>
+</div>
+
+</body>
+</html>
