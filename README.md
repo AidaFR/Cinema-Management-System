@@ -1,2 +1,2 @@
 # Cinema-Management-System
-Full-stack cinema management system integrating movie scheduling, ticket sales tracking, and role-based authentication.
+Full-stack cinema management system using **Java** integrating movie scheduling, ticket sales tracking, and role-based authentication.
